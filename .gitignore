@@ -5,3 +5,4 @@ package-lock.json
 src/database/database.sqlite
 src/database/database.sqlite-journal
 *.sqlite-journal
+*.json
