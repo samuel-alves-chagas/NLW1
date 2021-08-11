@@ -28,7 +28,7 @@
   margin: 80px auto;
   padding: 64px;
   max-width: 730px;
-  background: #777f97;
+  background: #FFF;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -44,7 +44,7 @@
   border: 0;
 }
 
-#page-create-point form legend {
+#page-create-point form header[role="legend"] {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -52,11 +52,11 @@
   margin-bottom: 40px;
 }
 
-#page-create-point form legend h2 {
+#page-create-point form header[role="legend"] h2 {
   font-size: 24px;
 }
 
-#page-create-point form legend span {
+#page-create-point form header[role="legend"] span {
   font-size: 14px;
   font-weight: normal;
   color: var(--text-color);
@@ -78,7 +78,7 @@
 #page-create-point form .field input[type="email"],
 #page-create-point form .field input[type="number"] {
   flex: 1;
-  background: #f0f0f5;
+  background: #e7e7f7;
   border-radius: 8px;
   border: 0;
   padding: 16px 24px;
