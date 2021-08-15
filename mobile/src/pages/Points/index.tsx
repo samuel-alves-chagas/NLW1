@@ -24,8 +24,17 @@ interface Item {
     image_url: string;
 }
 
+interface Point {
+    id: number;
+    name: string;
+    image: string;
+    latitude: number;
+    longitude: number;
+}
+
 const Points = () => {
     const [items, setItems] = useState<Item[]>([]);
+    const [points, setPoints] = useState<Point[]>([]);
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
     const [initialPosition, setInitialPosition] = useState<[number, number]>([
@@ -61,12 +70,24 @@ const Points = () => {
         });
     }, []);
 
+    useEffect(() => {
+        api.get("points", {
+            params: {
+                city: "Santa Rita do Sapucaí",
+                uf: "MG",
+                items: [1, 2],
+            },
+        }).then((response) => {
+            setPoints(response.data);
+        });
+    }, []);
+
     function handleNavigateBack() {
         navigation.goBack();
     }
 
-    function handleNavigateToDetail() {
-        navigation.navigate("Detail");
+    function handleNavigateToDetail(id: number) {
+        navigation.navigate("Detail", { point_id: id });
     }
 
     function handleSelectItem(id: number) {
@@ -105,26 +126,31 @@ const Points = () => {
                                 longitudeDelta: 0.014,
                             }}
                         >
-                            <Marker
-                                style={styles.mapMarker}
-                                coordinate={{
-                                    latitude: -22.2209285,
-                                    longitude: -45.7236775,
-                                }}
-                                onPress={handleNavigateToDetail}
-                            >
-                                <View style={styles.mapMarkerContainer}>
-                                    <Image
-                                        source={{
-                                            uri: "https://images.unsplash.com/photo-1556767576-5ec41e3239ea?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=600",
-                                        }}
-                                        style={styles.mapMarkerImage}
-                                    ></Image>
-                                    <Text style={styles.mapMarkerTitle}>
-                                        Mercado
-                                    </Text>
-                                </View>
-                            </Marker>
+                            {points.map((point) => (
+                                <Marker
+                                    key={String(point.id)}
+                                    style={styles.mapMarker}
+                                    coordinate={{
+                                        latitude: point.latitude,
+                                        longitude: point.longitude,
+                                    }}
+                                    onPress={() => {
+                                        handleNavigateToDetail(point.id);
+                                    }}
+                                >
+                                    <View style={styles.mapMarkerContainer}>
+                                        <Image
+                                            source={{
+                                                uri: point.image,
+                                            }}
+                                            style={styles.mapMarkerImage}
+                                        ></Image>
+                                        <Text style={styles.mapMarkerTitle}>
+                                            {point.name}
+                                        </Text>
+                                    </View>
+                                </Marker>
+                            ))}
                         </MapView>
                     )}
                 </View>
